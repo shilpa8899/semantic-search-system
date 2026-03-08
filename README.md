@@ -1,172 +1,175 @@
-Semantic Search System with Fuzzy Clustering and Semantic Cache
-Overview
+# Semantic Search System with Fuzzy Clustering and Semantic Cache
 
-This project implements a semantic search system using the 20 Newsgroups dataset.
-The system retrieves relevant documents based on the semantic meaning of queries rather than simple keyword matching.
+## Overview
 
-To improve efficiency, the system also includes a semantic cache that avoids recomputing results for queries that are semantically similar to previously asked queries.
+This project implements a lightweight semantic search system built on the **20 Newsgroups dataset**. Instead of traditional keyword search, the system retrieves documents based on the **semantic meaning of a query** using vector embeddings.
 
-The entire system is exposed through a REST API built with FastAPI.
+To improve efficiency, the system includes a **semantic cache** that detects semantically similar queries and avoids recomputing results. The system is exposed through a **REST API built with FastAPI**.
 
-Key Features
+---
 
-Semantic document search using vector embeddings
+## Key Features
 
-Efficient similarity search using a vector database
+- Semantic document retrieval using vector embeddings  
+- Efficient similarity search using a vector database (FAISS)  
+- Fuzzy clustering of documents using probabilistic clustering (Gaussian Mixture Models)  
+- Custom semantic cache built from scratch (no Redis or external caching tools)  
+- FastAPI service exposing the search system as an API  
 
-Fuzzy clustering of documents using probabilistic clustering
+---
 
-Custom semantic cache built from scratch (no Redis or external caching tools)
+## System Architecture
 
-FastAPI service for querying the system
 
-System Architecture
 User Query
-   │
-   ▼
+│
+▼
 Query Embedding (SentenceTransformer)
-   │
-   ▼
+│
+▼
 Semantic Cache Lookup
-   │
-   ├── Cache Hit → Return Cached Result
-   │
-   └── Cache Miss
-           │
-           ▼
-      FAISS Vector Search
-           │
-           ▼
-   Retrieve Most Similar Document
-           │
-           ▼
-      Store Result in Cache
-           │
-           ▼
-        Return Response
-Dataset
+│
+├── Cache Hit → Return Cached Result
+│
+└── Cache Miss
+│
+▼
+FAISS Vector Search
+│
+▼
+Retrieve Most Similar Document
+│
+▼
+Store Result in Cache
+│
+▼
+Return API Response
 
-This project uses the 20 Newsgroups dataset, a popular dataset for text classification and NLP research.
 
-Dataset source:
+---
+
+## Dataset
+
+This project uses the **20 Newsgroups dataset**, a widely used dataset for text classification and NLP research.
+
+Dataset source:  
 https://archive.ics.uci.edu/dataset/113/twenty+newsgroups
 
-Dataset statistics:
+Dataset characteristics:
 
-~20,000 documents
-
-20 topic categories
+- Approximately **20,000 documents**
+- **20 topic categories**
 
 Example categories include:
 
-comp.graphics
-
-sci.space
-
-rec.sport.baseball
-
-talk.politics.guns
-
-sci.med
+- comp.graphics  
+- sci.space  
+- rec.sport.baseball  
+- talk.politics.guns  
+- sci.med  
 
 During preprocessing, the following noisy components were removed:
 
-email headers
+- email headers  
+- message footers  
+- quoted replies  
 
-message footers
+This ensures embeddings capture the **actual semantic content of the documents**.
 
-quoted replies
+---
 
-This ensures embeddings capture the actual semantic content of messages.
+## Technologies Used
 
-Technologies Used
+| Layer | Technology |
+|------|-------------|
+| Language | Python |
+| API Framework | FastAPI |
+| Embeddings | SentenceTransformers |
+| Vector Search | FAISS |
+| Clustering | Scikit-learn |
+| Numerical Computing | NumPy |
+| Server | Uvicorn |
 
-The project is implemented using the following technologies:
+---
 
-Python
-
-FastAPI – REST API framework
-
-SentenceTransformers – text embedding generation
-
-FAISS – vector similarity search
-
-Scikit-learn – clustering algorithms
-
-NumPy – numerical computation
-
-Uvicorn – ASGI server for running the API
-
-Project Structure
-trademarkia-semantic-search
+## Project Structure
+semantic-search-system
 │
 ├── api
-│   └── main.py
+│ └── main.py
 │
 ├── cache
-│   └── semantic_cache.py
+│ └── semantic_cache.py
 │
 ├── clustering
-│   ├── fuzzy_cluster.py
-│   └── run_clustering.py
+│ ├── fuzzy_cluster.py
+│ └── run_clustering.py
 │
 ├── embeddings
-│   ├── embedder.py
-│   └── generate_embeddings.py
+│ ├── embedder.py
+│ └── generate_embeddings.py
 │
 ├── vector_store
-│   ├── faiss_index.py
-│   ├── build_index.py
-│   └── search_engine.py
+│ ├── faiss_index.py
+│ ├── build_index.py
+│ └── search_engine.py
 │
 ├── data
 │
 ├── requirements.txt
 ├── README.md
 └── .gitignore
-Semantic Cache Design
 
-Traditional caches only match identical queries.
-This project implements a semantic cache that detects queries with similar meaning.
+
+
+---
+
+## Semantic Cache Design
+
+Traditional caching systems only match **identical queries**.  
+This project implements a **semantic cache** that recognizes queries with **similar meaning** using cosine similarity between embeddings.
 
 Each cache entry stores:
 
-query text
-
-query embedding
-
-retrieved result
-
-dominant cluster
+- query text  
+- query embedding  
+- retrieved result  
+- dominant cluster  
 
 When a new query arrives:
 
-The query is embedded.
-
-Its embedding is compared with cached embeddings.
-
-If similarity exceeds a threshold, the cached result is returned.
+1. The query is converted to an embedding.
+2. It is compared with cached embeddings using cosine similarity.
+3. If similarity exceeds a threshold, the cached result is returned.
 
 Similarity threshold used:
-
 0.85
-Threshold Behavior
-Threshold	Behavior
-0.95	Very strict matching
-0.85	Balanced matching
-0.70	More aggressive caching
-API Endpoints
-POST /query
+
+
+### Threshold Behavior
+
+| Threshold | Behavior |
+|----------|-----------|
+| 0.95 | Strict matching |
+| 0.85 | Balanced matching |
+| 0.70 | Aggressive caching |
+
+---
+
+## API Endpoints
+
+### POST `/query`
 
 Accepts a natural language query and returns the most relevant document.
 
-Example request:
+**Example request**
 
+```json
 {
   "query": "space shuttle launch"
 }
 
-Example response:
+Example response
 
 {
   "query": "space shuttle launch",
@@ -180,7 +183,7 @@ GET /cache/stats
 
 Returns statistics about the semantic cache.
 
-Example response:
+Example response
 
 {
   "total_entries": 2,
@@ -192,8 +195,32 @@ DELETE /cache
 
 Clears all cache entries.
 
-Example response:
+Example response
 
 {
   "message": "Cache cleared"
 }
+Setup Instructions
+Clone the repository
+git clone <repository-url>
+cd semantic-search-system
+Create virtual environment
+python -m venv venv
+Activate environment
+
+Windows
+
+venv\Scripts\activate
+Install dependencies
+pip install -r requirements.txt
+Run the API server
+uvicorn api.main:app --reload
+
+Open API documentation:
+
+http://127.0.0.1:8000/docs
+Conclusion
+
+This project demonstrates how modern NLP techniques such as embeddings, vector search, clustering, and semantic caching can be combined to build an efficient semantic search system.
+
+The system improves performance by recognizing semantically similar queries and avoiding redundant computations while still returning relevant results.
