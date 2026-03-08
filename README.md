@@ -19,31 +19,7 @@ To improve efficiency, the system includes a **semantic cache** that detects sem
 ---
 
 ## System Architecture
-
-
-User Query
-│
-▼
-Query Embedding (SentenceTransformer)
-│
-▼
-Semantic Cache Lookup
-│
-├── Cache Hit → Return Cached Result
-│
-└── Cache Miss
-│
-▼
-FAISS Vector Search
-│
-▼
-Retrieve Most Similar Document
-│
-▼
-Store Result in Cache
-│
-▼
-Return API Response
+<img width="340" height="472" alt="image" src="https://github.com/user-attachments/assets/d58b1100-8bda-4551-8fd9-baccbac4dca0" />
 
 
 ---
@@ -53,7 +29,7 @@ Return API Response
 This project uses the **20 Newsgroups dataset**, a widely used dataset for text classification and NLP research.
 
 Dataset source:  
-https://archive.ics.uci.edu/dataset/113/twenty+newsgroups
+[https://archive.ics.uci.edu/dataset/113/twenty+newsgroups](url)
 
 Dataset characteristics:
 
@@ -93,33 +69,7 @@ This ensures embeddings capture the **actual semantic content of the documents**
 ---
 
 ## Project Structure
-semantic-search-system
-│
-├── api
-│ └── main.py
-│
-├── cache
-│ └── semantic_cache.py
-│
-├── clustering
-│ ├── fuzzy_cluster.py
-│ └── run_clustering.py
-│
-├── embeddings
-│ ├── embedder.py
-│ └── generate_embeddings.py
-│
-├── vector_store
-│ ├── faiss_index.py
-│ ├── build_index.py
-│ └── search_engine.py
-│
-├── data
-│
-├── requirements.txt
-├── README.md
-└── .gitignore
-
+<img width="338" height="664" alt="image" src="https://github.com/user-attachments/assets/ec8646e8-d356-4520-9095-9f621da025ef" />
 
 
 ---
@@ -164,7 +114,7 @@ Accepts a natural language query and returns the most relevant document.
 
 **Example request**
 
-```json
+```
 {
   "query": "space shuttle launch"
 }
@@ -224,3 +174,5 @@ Conclusion
 This project demonstrates how modern NLP techniques such as embeddings, vector search, clustering, and semantic caching can be combined to build an efficient semantic search system.
 
 The system improves performance by recognizing semantically similar queries and avoiding redundant computations while still returning relevant results.
+
+---
