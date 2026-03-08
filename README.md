@@ -19,8 +19,8 @@ To improve efficiency, the system includes a **semantic cache** that detects sem
 ---
 
 ## System Architecture
-<img width="340" height="472" alt="image" src="https://github.com/user-attachments/assets/d58b1100-8bda-4551-8fd9-baccbac4dca0" />
 
+<img width="340" height="472" src="https://github.com/user-attachments/assets/d58b1100-8bda-4551-8fd9-baccbac4dca0" />
 
 ---
 
@@ -29,7 +29,7 @@ To improve efficiency, the system includes a **semantic cache** that detects sem
 This project uses the **20 Newsgroups dataset**, a widely used dataset for text classification and NLP research.
 
 Dataset source:  
-[https://archive.ics.uci.edu/dataset/113/twenty+newsgroups](url)
+https://archive.ics.uci.edu/dataset/113/twenty+newsgroups
 
 Dataset characteristics:
 
@@ -69,9 +69,8 @@ This ensures embeddings capture the **actual semantic content of the documents**
 ---
 
 ## Project Structure
-<img width="329" height="649" alt="image" src="https://github.com/user-attachments/assets/a92513db-7311-41d6-9d6d-c442b692de02" />
 
-
+<img width="329" height="649" src="https://github.com/user-attachments/assets/a92513db-7311-41d6-9d6d-c442b692de02" />
 
 ---
 
@@ -93,9 +92,9 @@ When a new query arrives:
 2. It is compared with cached embeddings using cosine similarity.
 3. If similarity exceeds a threshold, the cached result is returned.
 
-Similarity threshold used:
-0.85
+Similarity threshold used: **0.85**
 
+---
 
 ### Threshold Behavior
 
@@ -107,21 +106,23 @@ Similarity threshold used:
 
 ---
 
-## API Endpoints
+# API Endpoints
 
-### POST `/query`
+## POST `/query`
 
 Accepts a natural language query and returns the most relevant document.
 
-**Example request**
+### Example request
 
-```
+```json
 {
   "query": "space shuttle launch"
 }
+```
 
-Example response
+### Example response
 
+```json
 {
   "query": "space shuttle launch",
   "cache_hit": false,
@@ -130,50 +131,71 @@ Example response
   "result": "...document text...",
   "dominant_cluster": 4
 }
-GET /cache/stats
+```
+
+---
+
+## GET `/cache/stats`
 
 Returns statistics about the semantic cache.
 
-Example response
+### Example response
 
+```json
 {
   "total_entries": 2,
   "hit_count": 1,
   "miss_count": 1,
   "hit_rate": 0.5
 }
-DELETE /cache
+```
+
+---
+
+## DELETE `/cache`
 
 Clears all cache entries.
 
-Example response
+### Example response
 
+```json
 {
   "message": "Cache cleared"
 }
-Setup Instructions
-Clone the repository
-git clone <repository-url>
-cd semantic-search-system
-Create virtual environment
-python -m venv venv
-Activate environment
+```
 
-Windows
+---
 
-venv\Scripts\activate
-Install dependencies
-pip install -r requirements.txt
-Run the API server
-uvicorn api.main:app --reload
+# API Documentation
 
-Open API documentation:
+The API is built using FastAPI, which automatically generates interactive documentation.
 
+Open the documentation in your browser:
+
+```
 http://127.0.0.1:8000/docs
-Conclusion
+```
+
+---
+
+# API Demonstration
+
+### FastAPI Documentation Interface
+
+![API Docs](https://github.com/user-attachments/assets/dd63df72-aa29-4f98-a205-7360b6b5ec87)
+
+### Query Endpoint Example
+
+![Query Example](https://github.com/user-attachments/assets/231c9198-8b4c-4822-8746-dbf3befa9ec8)
+
+### Cache Statistics Example
+
+![Cache Stats](https://github.com/user-attachments/assets/bf1e2f4a-de18-4499-8a98-5f288c34db2f)
+
+---
+
+# Conclusion
 
 This project demonstrates how modern NLP techniques such as embeddings, vector search, clustering, and semantic caching can be combined to build an efficient semantic search system.
 
 The system improves performance by recognizing semantically similar queries and avoiding redundant computations while still returning relevant results.
-
----
