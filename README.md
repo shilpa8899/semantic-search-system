@@ -69,7 +69,8 @@ This ensures embeddings capture the **actual semantic content of the documents**
 ---
 
 ## Project Structure
-<img width="338" height="664" alt="image" src="https://github.com/user-attachments/assets/ec8646e8-d356-4520-9095-9f621da025ef" />
+<img width="329" height="649" alt="image" src="https://github.com/user-attachments/assets/a92513db-7311-41d6-9d6d-c442b692de02" />
+
 
 
 ---
